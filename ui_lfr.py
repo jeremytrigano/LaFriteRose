@@ -119,7 +119,7 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "MainWindow", None, -1))
+        MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "Centres de vacances - La Frite Rose", None, -1))
         self.lRech.setText(QtWidgets.QApplication.translate("MainWindow", "Recherche :", None, -1))
         self.lFiltr.setText(QtWidgets.QApplication.translate("MainWindow", "Filtres :", None, -1))
         self.cbPays.setItemText(0, QtWidgets.QApplication.translate("MainWindow", "Tous les pays", None, -1))
