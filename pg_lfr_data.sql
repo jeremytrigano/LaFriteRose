@@ -6,7 +6,7 @@ VALUES ('Opio en Provence', 'Chemin Cambarnier-Nord', '06650', 'Opio','Alpes Mar
 INSERT INTO centre (nom, adresse, code_postal, ville, region, pays) 
 VALUES ('La Palmyre Atlantique', 'Allée du grand large La Palmyre', '17570', 'La Palmyre-Les Mathes','Poitou-Charentes', 'France');
 INSERT INTO centre (nom, adresse, code_postal, ville, region, pays)
-VALUES ("Rêv'hotel", "Plage d'Acharavi", '49100', 'Acharavi','Corfu', 'Grèce');
+VALUES ('Rêv''hôtel', 'Plage d''Acharavi', '49100', 'Acharavi','Corfu', 'Grèce');
 
 INSERT INTO animateur (nom,prenom) VALUES ('Noah','MacLittis');
 INSERT INTO animateur (nom,prenom) VALUES ('Pyer','Emann');

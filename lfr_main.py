@@ -107,11 +107,23 @@ class MainWindow(QMainWindow):
         qt.leRech.setText("")
         if col == 'pays':
             rech = qt.cbPays.currentText()
+            rech = rech.replace("'","''")
+            if rech == "Tous les pays":
+                rech = ""
         if col == 'region':
             rech = qt.cbRegion.currentText()
+            rech = rech.replace("'","''")
+            if rech == "Toutes les régions":
+                rech = ""
         if col == 'nom':
             rech = qt.cbNom.currentText()
-        self.afficheCentres(f"""SELECT * FROM centre WHERE {col} = '{rech}'""")
+            rech = rech.replace("'","''")
+            if rech == "Tous les noms":
+                rech = ""
+        if rech == "":
+            self.afficheCentres("""SELECT * FROM centre ORDER BY id_c;""")
+        else:
+            self.afficheCentres(f"""SELECT * FROM centre WHERE {col} = '{rech}' ORDER BY id_c;""")
 
 
 if __name__ == "__main__":
