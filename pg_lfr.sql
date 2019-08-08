@@ -19,9 +19,8 @@ CREATE TABLE lafriterose.vacancier(
 	id_v serial PRIMARY KEY,
 	nom character varying(50) NOT NULL,
 	prenom character varying(50) NOT NULL,
-	date_debut date NOT NULL,
-	date_fin date NOT NULL,
-	adresse character varying(250) NOT NULL
+	date_de_naissance date NOT NULL,
+	statut character varying(10) NOT NULL
 );
 
 CREATE TABLE lafriterose.animation(
