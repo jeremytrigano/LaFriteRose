@@ -1,21 +1,32 @@
 SET CLIENT_ENCODING TO 'UTF-8';
 SET DATESTYLE = SQL, DMY;
 
-INSERT INTO centre (nom, adresse, code_postal, ville, region, pays) 
-VALUES ('Opio en Provence', 'Chemin Cambarnier-Nord', '06650', 'Opio','Alpes Maritimes', 'France');
-INSERT INTO centre (nom, adresse, code_postal, ville, region, pays) 
-VALUES ('La Palmyre Atlantique', 'Allée du grand large La Palmyre', '17570', 'La Palmyre-Les Mathes','Poitou-Charentes', 'France');
-INSERT INTO centre (nom, adresse, code_postal, ville, region, pays)
-VALUES ('Rêv''hôtel', 'Plage d''Acharavi', '49100', 'Acharavi', 'Corfu', 'Grèce');
-INSERT INTO centre (nom, adresse, code_postal, ville, region, pays)
-VALUES ('L''idylle Arena', 'Viale Spartivento', '09010', 'Domus De Maria', 'Sardaigne', 'Italie');
+INSERT INTO centre (nom, adresse, code_postal, ville, region, pays) VALUES
+('Opio en Provence', 'Chemin Cambarnier-Nord', '06650', 'Opio','Alpes Maritimes', 'France'),
+('La Palmyre Atlantique', 'Allée du grand large La Palmyre', '17570', 'La Palmyre-Les Mathes','Poitou-Charentes', 'France'),
+('Rêv''hôtel', 'Plage d''Acharavi', '49100', 'Acharavi', 'Corfu', 'Grèce'),
+('L''idylle Arena', 'Viale Spartivento', '09010', 'Domus De Maria', 'Sardaigne', 'Italie'),
+('Lice Paradise', 'Route de la Côté 2000', '74120', 'Megève', 'Auvergne-Rhône-Alpes', 'France');
 
 INSERT INTO vacancier (nom, prenom, date_de_naissance, statut)
 VALUES ('Annaesky', 'Mario', '06/07/1985', 'VIP');
 
-INSERT INTO animateur (nom,prenom) VALUES ('Noah','MacLittis');
-INSERT INTO animateur (nom,prenom) VALUES ('Pyer','Emann');
+INSERT INTO animateur (nom,prenom) VALUES
+('Noah','MacLittis'),
+('Pyer','Emann');
 
-INSERT INTO employer (id_c,id_ar) VALUES (1,1);
-INSERT INTO employer (id_c,id_ar) VALUES (1,2);
-INSERT INTO employer (id_c,id_ar) VALUES (2,2);
+INSERT INTO animation (intitule, saison) VALUES
+('Plongée','printemps,été,automne,hiver'),
+('Escalade','printemps,été'),
+('Ski','hiver');
+
+INSERT INTO employer (id_c,id_ar) VALUES
+(1,1),
+(1,2),
+(2,2);
+
+INSERT INTO planning (date_debut, date_fin, id_an, id_c) VALUES
+('2019-02-15 09:00:00-00', '2019-02-15 12:00:00-00', 3, 5);
+
+INSERT INTO proposer (id_c, id_an) VALUES
+(5, 3);
