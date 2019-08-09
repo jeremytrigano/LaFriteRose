@@ -1,7 +1,8 @@
 import sys
 import re
-from PySide2.QtWidgets import (QApplication, QMainWindow, QTableWidgetItem, QHeaderView, QMessageBox)
+from PySide2.QtWidgets import (QApplication, QMainWindow, QTableWidgetItem, QMessageBox, QDialog)
 from ui_lfr import Ui_MainWindow
+from ui_affich_centre import Ui_Dialog
 import psycopg2 as pg
 
 user = 'lafriterose'
@@ -41,7 +42,7 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         qt = self.ui
         qt.setupUi(self)
-
+        self.wAffichCentre = QDialog()
         self.qMessBox = QMessageBox()
 
         self.afficheCentres("""SELECT * FROM centre ORDER BY id_c;""")
@@ -110,18 +111,27 @@ class MainWindow(QMainWindow):
         self.cbChanged('pays')
 
     def selecCentre(self):
-        qt = self.ui
-        rowSelec = qt.tableWidget.currentItem().row()
-        idSelec = int(qt.tableWidget.item(rowSelec, 0).text())
-        listIdSelec = reqPostgresql(f"""SELECT * FROM centre WHERE id_c = {idSelec};""")
-
-        textMessBox = ""
-        for i in range(len(self.namesColList)):
-            if i != 0:
-                textMessBox += self.namesColList[i] + " : " + listIdSelec[0][i] + "\n"
-
-        self.qMessBox.setText(textMessBox)
-        self.qMessBox.exec()
+        self.wAffichCentre.show()
+        # qt = self.ui
+        # rowSelec = qt.tableWidget.currentItem().row()
+        # idSelec = int(qt.tableWidget.item(rowSelec, 0).text())
+        # listIdSelec = reqPostgresql(f"""SELECT * FROM centre WHERE id_c = {idSelec};""")
+        # listAnIdSelect = reqOnePostgresql(f"""SELECT intitule FROM animation a
+        #                                     JOIN proposer p ON a.id_an = p.id_an
+        #                                     JOIN centre c ON p.id_c = c.id_c
+        #                                     WHERE c.id_c = {idSelec};""")
+        #
+        # textMessBox = ""
+        # for i in range(len(self.namesColList)):
+        #     if i != 0:
+        #         textMessBox += self.namesColList[i] + " : " + listIdSelec[0][i] + "\n"
+        #
+        # textMessBox += "\nAnimation(s) proposée(s) : "
+        # for elem in listAnIdSelect:
+        #     textMessBox += elem + "\n"
+        #
+        # self.qMessBox.setText(textMessBox)
+        # self.qMessBox.exec()
 
     def cbregionChanged(self):
         qt = self.ui
