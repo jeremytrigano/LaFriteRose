@@ -34,7 +34,7 @@ CREATE TABLE lafriterose.planning(
 	date_debut timestamp NOT NULL,
 	date_fin timestamp NOT NULL,
 	id_an serial NOT NULL CONSTRAINT fk_id_an REFERENCES lafriterose.animation (id_an),
-	id_c serial NOT NULL CONSTRAINT fk_id_c REFERENCES lafriterose.animation (id_c)
+	id_c serial NOT NULL CONSTRAINT fk_id_c REFERENCES lafriterose.centre (id_c)
 );
 
 CREATE TABLE lafriterose.employer(
@@ -61,4 +61,10 @@ CREATE TABLE lafriterose.inscrire(
 	id_v serial, CONSTRAINT fk_id_v FOREIGN KEY (id_v) REFERENCES lafriterose.vacancier(id_v),
 	id_p serial, CONSTRAINT fk_id_p FOREIGN KEY (id_p) REFERENCES lafriterose.planning(id_p),
 	CONSTRAINT id_i PRIMARY KEY (id_v,id_p)
+);
+
+CREATE TABLE lafriterose.proposer(
+	id_c serial, CONSTRAINT fk_id_c FOREIGN KEY (id_c) REFERENCES lafriterose.centre(id_c),
+	id_an serial, CONSTRAINT fk_id_an FOREIGN KEY (id_an) REFERENCES lafriterose.animation(id_an),
+	CONSTRAINT id_pr PRIMARY KEY (id_c,id_an)
 );
