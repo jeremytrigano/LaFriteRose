@@ -1,9 +1,12 @@
 import sys
 import re
-from PySide2.QtWidgets import (QApplication, QMainWindow, QTableWidgetItem, QMessageBox, QDialog)
+from PySide2.QtWidgets import (QApplication, QMainWindow, QTableWidgetItem, QDialog)
 from ui_lfr import Ui_MainWindow
-from ui_affich_centre import Ui_Dialog
+from ui_lfr_centre import Ui_Form
 import psycopg2 as pg
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+import numpy as np
 
 user = 'lafriterose'
 password = 'lfr'
@@ -42,8 +45,6 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         qt = self.ui
         qt.setupUi(self)
-        self.wAffichCentre = QDialog()
-        self.qMessBox = QMessageBox()
 
         self.afficheCentres("""SELECT * FROM centre ORDER BY id_c;""")
 
@@ -111,27 +112,52 @@ class MainWindow(QMainWindow):
         self.cbChanged('pays')
 
     def selecCentre(self):
-        self.wAffichCentre.show()
-        # qt = self.ui
-        # rowSelec = qt.tableWidget.currentItem().row()
-        # idSelec = int(qt.tableWidget.item(rowSelec, 0).text())
-        # listIdSelec = reqPostgresql(f"""SELECT * FROM centre WHERE id_c = {idSelec};""")
-        # listAnIdSelect = reqOnePostgresql(f"""SELECT intitule FROM animation a
-        #                                     JOIN proposer p ON a.id_an = p.id_an
-        #                                     JOIN centre c ON p.id_c = c.id_c
-        #                                     WHERE c.id_c = {idSelec};""")
-        #
-        # textMessBox = ""
-        # for i in range(len(self.namesColList)):
-        #     if i != 0:
-        #         textMessBox += self.namesColList[i] + " : " + listIdSelec[0][i] + "\n"
-        #
-        # textMessBox += "\nAnimation(s) proposée(s) : "
-        # for elem in listAnIdSelect:
-        #     textMessBox += elem + "\n"
-        #
-        # self.qMessBox.setText(textMessBox)
-        # self.qMessBox.exec()
+        qt = self.ui
+
+        wAffichCentre = QDialog()
+        uiAffichCentre = Ui_Form()
+        uiAffichCentre.setupUi(wAffichCentre)
+
+        rowSelec = qt.tableWidget.currentItem().row()
+        idSelec = int(qt.tableWidget.item(rowSelec, 0).text())
+        print(idSelec)
+        listIdSelec = reqPostgresql(f"""SELECT * FROM centre WHERE id_c = {idSelec};""")
+        listAnIdSelect = reqOnePostgresql(f"""SELECT intitule FROM animation a
+                                            JOIN proposer p ON a.id_an = p.id_an
+                                            JOIN centre c ON p.id_c = c.id_c
+                                            WHERE c.id_c = {idSelec};""")
+
+        textDescr = ""
+        for i in range(len(self.namesColList)):
+            if i != 0:
+                textDescr += self.namesColList[i] + " : " + listIdSelec[0][i] + "\n"
+
+        textAnim = "Animation(s) proposée(s) : \n"
+        for elem in listAnIdSelect:
+            textAnim += elem + "\n"
+
+        uiAffichCentre.teDescr.setText(textDescr)
+        uiAffichCentre.teAnim.setText(textAnim)
+
+        freq = [np.random.randint(100, 200), np.random.randint(100, 200), np.random.randint(100, 200), np.random.randint(200, 300),
+                np.random.randint(300, 400), np.random.randint(500, 600), np.random.randint(700, 800), np.random.randint(700, 800),
+                np.random.randint(500, 600), np.random.randint(300, 400), np.random.randint(200, 300), np.random.randint(100, 200)]
+        mois = range(1, 13)
+
+        fig, ax = plt.subplots()
+        ax.plot(mois, freq)
+
+        plt.xticks(np.arange(min(mois), max(mois) + 1, 1.0))
+
+        ax.set(xlabel='mois', ylabel='fréq.',
+               title='Fréquentation du centre')
+        ax.grid(True, linestyle='dotted')
+
+        canvas = FigureCanvas(fig)
+        uiAffichCentre.horizontalLayout_2.addWidget(canvas)
+        self.setLayout(uiAffichCentre.horizontalLayout_2)
+
+        wAffichCentre.exec_()
 
     def cbregionChanged(self):
         qt = self.ui
