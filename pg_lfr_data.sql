@@ -29,4 +29,6 @@ INSERT INTO planning (date_debut, date_fin, id_an, id_c) VALUES
 ('2019-02-15 09:00:00-00', '2019-02-15 12:00:00-00', 3, 5);
 
 INSERT INTO proposer (id_c, id_an) VALUES
-(5, 3);
+(5, 3),
+(4, 1),
+(4, 2);
