@@ -5,7 +5,8 @@ CREATE TABLE lafriterose.centre(
 	code_postal integer,
 	ville character varying(200) NOT NULL,
 	region character varying(100) NOT NULL,
-	pays character varying(150) NOT NULL
+	pays character varying(150) NOT NULL,
+	nom_image character varying(20);
 );
 
 CREATE TABLE lafriterose.animateur(
