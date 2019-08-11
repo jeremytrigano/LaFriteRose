@@ -1,15 +1,17 @@
 SET CLIENT_ENCODING TO 'UTF-8';
 SET DATESTYLE = SQL, DMY;
 
-INSERT INTO centre (nom, adresse, code_postal, ville, region, pays) VALUES
-('Opio en Provence', 'Chemin Cambarnier-Nord', '06650', 'Opio','Alpes Maritimes', 'France'),
-('La Palmyre Atlantique', 'Allée du grand large La Palmyre', '17570', 'La Palmyre-Les Mathes','Poitou-Charentes', 'France'),
-('Rêv''hôtel', 'Plage d''Acharavi', '49100', 'Acharavi', 'Corfu', 'Grèce'),
-('L''idylle Arena', 'Viale Spartivento', '09010', 'Domus De Maria', 'Sardaigne', 'Italie'),
-('Lice Paradise', 'Route de la Côté 2000', '74120', 'Megève', 'Auvergne-Rhône-Alpes', 'France');
+INSERT INTO centre (nom, adresse, code_postal, ville, region, pays, nom_image) VALUES
+('Opio en Provence', 'Chemin Cambarnier-Nord', '06650', 'Opio','Alpes Maritimes', 'France', 'opio.jpg'),
+('La Palmyre Atlantique', 'Allée du grand large La Palmyre', '17570', 'La Palmyre-Les Mathes','Poitou-Charentes', 'France', null),
+('Rêv''hôtel', 'Plage d''Acharavi', '49100', 'Acharavi', 'Corfu', 'Grèce', null),
+('L''idylle Arena', 'Viale Spartivento', '09010', 'Domus De Maria', 'Sardaigne', 'Italie', null),
+('Lice Paradise', 'Route de la Côté 2000', '74120', 'Megève', 'Auvergne-Rhône-Alpes', 'France', 'megeve.jpg'),
+('Vishnu Home', 'Jl. Raya Nusa Dua Selatan', '80363', 'Kabupaten Badung','Bali', 'Indonésie', 'bali.jpg');
 
-INSERT INTO vacancier (nom, prenom, date_de_naissance, statut)
-VALUES ('Annaesky', 'Mario', '06/07/1985', 'VIP');
+INSERT INTO vacancier (nom, prenom, date_de_naissance, statut) VALUES
+('Annaesky', 'Mario', '06/07/1985', 'VIP'),
+('Guldich', 'Octave', '04/11/1978', 'VIP');
 
 INSERT INTO animateur (nom,prenom) VALUES
 ('Noah','MacLittis'),
