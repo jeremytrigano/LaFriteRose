@@ -1,5 +1,7 @@
 import sys
 import re
+
+from PySide2.QtGui import QPixmap
 from PySide2.QtWidgets import (QApplication, QMainWindow, QTableWidgetItem, QDialog)
 from ui_lfr import Ui_MainWindow
 from ui_lfr_centre import Ui_Form
@@ -56,12 +58,14 @@ class MainWindow(QMainWindow):
 
         listNom = reqOnePostgresql("""SELECT nom FROM centre ORDER BY nom;""")
         qt.cbNom.addItems(listNom)
+        qt.cbCentreRes.addItems(["Tous les noms"] + listNom)
 
         qt.leRech.textChanged.connect(self.entreeRech)
         qt.cbPays.currentIndexChanged.connect(self.cbpaysChanged)
         qt.cbRegion.currentIndexChanged.connect(self.cbregionChanged)
         qt.cbNom.currentIndexChanged.connect(self.cbnomChanged)
         qt.tableWidget.cellDoubleClicked.connect(self.selecCentre)
+        qt.cbCentreRes.currentIndexChanged.connect(self.selecAffImage)
 
     def afficheCentres(self, req):
         qt = self.ui
@@ -78,7 +82,7 @@ class MainWindow(QMainWindow):
                 self.namesColList.append(name[0])
 
         cpt_centre = 0
-        qt.tableWidget.setColumnCount(nbCol[0][0])
+        qt.tableWidget.setColumnCount(nbCol[0][0]-1)
         qt.tableWidget.verticalHeader().hide()
         qt.tableWidget.setHorizontalHeaderLabels(self.namesColList)
 
@@ -94,7 +98,7 @@ class MainWindow(QMainWindow):
         qt = self.ui
         textRech = qt.leRech.text()
         textRech = textRech.replace("'", "''")
-        self.afficheCentres(f"""SELECT * FROM centre WHERE pays like '%{textRech}%' OR
+        self.afficheCentres(f"""SELECT * FROM centre WHERE pays ILIKE '%{textRech}%' OR
         adresse ILIKE '%{textRech}%' OR
         region ILIKE '%{textRech}%' OR
         nom ILIKE '%{textRech}%' OR
@@ -120,7 +124,6 @@ class MainWindow(QMainWindow):
 
         rowSelec = qt.tableWidget.currentItem().row()
         idSelec = int(qt.tableWidget.item(rowSelec, 0).text())
-        print(idSelec)
         listIdSelec = reqPostgresql(f"""SELECT * FROM centre WHERE id_c = {idSelec};""")
         listAnIdSelect = reqOnePostgresql(f"""SELECT intitule FROM animation a
                                             JOIN proposer p ON a.id_an = p.id_an
@@ -200,6 +203,19 @@ class MainWindow(QMainWindow):
             self.afficheCentres("""SELECT * FROM centre ORDER BY id_c;""")
         else:
             self.afficheCentres(f"""SELECT * FROM centre WHERE {col} = '{rech}' ORDER BY id_c;""")
+
+    def selecAffImage(self):
+        qt = self.ui
+        rech = qt.cbCentreRes.currentText()
+        rech = rech.replace("'", "''")
+        if rech != "Tous les noms":
+            pixCentre = reqOnePostgresql(f"""SELECT nom_image FROM centre WHERE nom = '{rech}'""")
+            if pixCentre[0] != None:
+                self.ui.lImage.setPixmap(QPixmap(f"img/{pixCentre[0]}"))
+            else:
+                self.ui.lImage.setPixmap(QPixmap("img/lfr_small.jpg"))
+        else:
+            self.ui.lImage.setPixmap(QPixmap("img/lfr_small.jpg"))
 
 
 if __name__ == "__main__":
