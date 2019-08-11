@@ -73,6 +73,7 @@ class MainWindow(QMainWindow):
         listCentres = reqPostgresql(req)
         nbCol = reqPostgresql("""SELECT count(*) FROM information_schema.columns WHERE table_name = 'centre';""")
         namesCol = reqPostgresql("""SELECT column_name FROM information_schema.columns WHERE table_schema = 'lafriterose' AND table_name = 'centre';""")
+        namesCol.remove(('nom_image',))
 
         self.namesColList = []
         for name in namesCol:
