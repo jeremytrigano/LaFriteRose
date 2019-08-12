@@ -1,6 +1,7 @@
 import sys
 import re
 
+from PySide2.QtCore import QDate
 from PySide2.QtGui import QPixmap
 from PySide2.QtWidgets import (QApplication, QMainWindow, QTableWidgetItem, QDialog)
 from ui_lfr import Ui_MainWindow
@@ -48,6 +49,11 @@ class MainWindow(QMainWindow):
         qt = self.ui
         qt.setupUi(self)
 
+        qt.deNaissance.setDate(QDate(np.random.randint(1950, 2001), np.random.randint(1, 13), np.random.randint(1, 29)))
+        auj = QDate().currentDate()
+        qt.deDebut.setDate(auj)
+        qt.deFin.setDate(auj.addDays(7))
+
         self.afficheCentres("""SELECT * FROM centre ORDER BY id_c;""")
 
         listPays = reqOnePostgresql("""SELECT DISTINCT pays FROM centre ORDER BY pays;""")
@@ -66,6 +72,7 @@ class MainWindow(QMainWindow):
         qt.cbNom.currentIndexChanged.connect(self.cbnomChanged)
         qt.tableWidget.cellDoubleClicked.connect(self.selecCentre)
         qt.cbCentreRes.currentIndexChanged.connect(self.selecAffImage)
+        qt.pbValidRes.clicked.connect(self.reservation)
 
     def afficheCentres(self, req):
         qt = self.ui
@@ -182,7 +189,7 @@ class MainWindow(QMainWindow):
         qt.cbRegion.currentIndexChanged.connect(self.cbregionChanged)
         self.cbChanged('nom')
 
-    def cbChanged(self,col):
+    def cbChanged(self, col):
         qt = self.ui
         qt.leRech.setText("")
         if col == 'pays':
@@ -217,6 +224,29 @@ class MainWindow(QMainWindow):
                 self.ui.lImage.setPixmap(QPixmap("img/lfr_small.jpg"))
         else:
             self.ui.lImage.setPixmap(QPixmap("img/lfr_small.jpg"))
+
+    def reservation(self):
+        qt = self.ui
+        msgErr = ""
+        if qt.leNom.text() == "":
+            msgErr += "<font color='red'>Le nom n'est pas renseigné</font><br>"
+        if qt.lePrenom.text() == "":
+            msgErr += "<font color='red'>Le prénom n'est pas renseigné</font><br>"
+        qt.lMsgErr.setText(msgErr)
+
+        if msgErr == "":
+            qt.lMsgErr.setText("<font color='green'>GOGOGO</font><br>")
+            nom = qt.leNom.text().replace("'", "")
+            prenom = qt.lePrenom.text().replace("'", "")
+            date_de_naissance = f"{qt.deNaissance.date().day():02d}/{qt.deNaissance.date().month():02d}/{qt.deNaissance.date().year()}"
+            requete = f"""INSERT INTO vacancier (nom, prenom, date_de_naissance, statut) VALUES ('{nom}', '{prenom}', '{date_de_naissance}', 'nouveau')"""
+            with pg.connect(dsn=dsn, user=user, password=password) as conn:
+                conn.set_session(autocommit=True)
+                with conn.cursor() as cursor:
+                    cursor.execute(requete)
+                    qt.lMsgErr.setText("<font color='green'>Inscription validée</font><br>")
+
+
 
 
 if __name__ == "__main__":
